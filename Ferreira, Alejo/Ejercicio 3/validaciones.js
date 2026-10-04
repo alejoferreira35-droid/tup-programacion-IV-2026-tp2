@@ -54,6 +54,15 @@ export const validarFiltrosCalificaciones = [
     .isInt({ min: 1 })
     .withMessage("materiaId debe ser un número entero mayor a 0"),
 ];
+// Filtro opcional del listado de alumnos
+export const validarFiltrosAlumnos = [
+  query("nombre")
+    .optional()
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage("El filtro nombre no puede estar vacío"),
+];
 
 // Datos de una calificación (al crear y al modificar)
 export const validarCalificacion = [

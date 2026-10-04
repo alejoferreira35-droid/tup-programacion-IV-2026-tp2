@@ -2,6 +2,7 @@ import express from "express";
 import { conectarDB } from "./db.js";
 import materiasRouter from "./materias.js";
 import calificacionesRouter from "./calificaciones.js";
+import alumnosRouter from "./alumnos.js";
 
 conectarDB();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use("/materias", materiasRouter);
 app.use("/calificaciones", calificacionesRouter);
+app.use("/alumnos", alumnosRouter);
 
 app.listen(port, () => {
   console.log(`La aplicación esta funcionando en ${port}`);

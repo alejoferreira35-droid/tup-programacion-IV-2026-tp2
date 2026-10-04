@@ -228,3 +228,13 @@ DELETE {{url}}/calificaciones/3
 
 ### Error 404: eliminar calificación inexistente
 DELETE {{url}}/calificaciones/9999
+### ================= ALUMNOS =================
+
+### Listado de alumnos con sus calificaciones
+GET {{url}}/alumnos
+
+### Buscar alumno por nombre (búsqueda parcial)
+GET {{url}}/alumnos?nombre=juan
+
+### Error 400: filtro de nombre vacío
+GET {{url}}/alumnos?nombre=

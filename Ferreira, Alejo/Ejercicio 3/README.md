@@ -64,6 +64,12 @@ Las notas son **números enteros del 1 al 10**, la escala habitual en la univers
 | PUT | `/calificaciones/:id` | Modifica un registro. Body: igual que en POST | 200, 400, 404, 409 |
 | DELETE | `/calificaciones/:id` | Elimina un registro | 204, 400, 404 |
 
+### Alumnos
+
+| Método | Ruta | Descripción | Respuestas |
+|---|---|---|---|
+| GET | `/alumnos` | Lista los alumnos con todas sus calificaciones agrupadas. Filtro opcional: `nombre` (búsqueda parcial) | 200, 400 |
+
 ## Fundamentación
 
 ### Modelo de datos
@@ -78,7 +84,8 @@ Las notas son **números enteros del 1 al 10**, la escala habitual en la univers
 
 ### API
 
-- **Dos recursos, `/materias` y `/calificaciones`**, con los métodos HTTP estándar. Además está `/materias/:id/calificaciones`, para consultar las notas de una materia.
+- **Tres recursos: `/materias`, `/calificaciones` y `/alumnos`**, con los métodos HTTP estándar. Además está `/materias/:id/calificaciones`, para consultar las notas de una materia.
+- **Recurso `/alumnos` de solo lectura**: como el enunciado pide guardar el nombre del alumno en cada registro (sin una tabla propia), los alumnos se crean y modifican a través de `/calificaciones`. `/alumnos` permite consultarlos agrupando sus calificaciones. Para agrupar se usa el mismo criterio de comparación que en la regla de unicidad (sin distinguir mayúsculas, tildes ni espacios sobrantes).
 - **Notas como arreglo en el body** (`"notas": [7, 8, 9]`): hace explícito que son exactamente tres, y se valida con `isArray({ min: 3, max: 3 })`. La respuesta usa el mismo formato.
 - **La materia en la respuesta como objeto** `{ id, nombre }`, obtenido con un `JOIN`, así el cliente no necesita otra consulta para saber el nombre.
 - **Validaciones con express-validator**:
@@ -88,7 +95,7 @@ Las notas son **números enteros del 1 al 10**, la escala habitual en la univers
   - `body("notas")`: arreglo de exactamente 3 elementos.
   - `body("notas.*")`: cada nota debe ser de tipo número y entera entre 1 y 10.
   - **Unicidad**: una validación `custom` consulta si ya existe la combinación alumno + materia. Al modificar, excluye el propio registro.
-  - `query("alumno")` y `query("materiaId")`: filtros opcionales validados.
+  - `query("alumno")`, `query("materiaId")` y `query("nombre")`: filtros opcionales validados.
 - **Códigos de respuesta**:
   - 201 al crear.
   - 204 al eliminar.
